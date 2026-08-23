@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>𝐅 [𝐒𝐎𝐂𝐈𝐄𝐓𝐘]™ | Unidad Deep Web</title>
+<link rel="icon" type="image/png" sizes="32x32" href="https://hackpurgatory.org/data/logo.png">
+<link rel="apple-touch-icon" href="https://hackpurgatory.org/data/logo.png">
+<link rel="shortcut icon" href="https://hackpurgatory.org/data/logo.png">
+<style>
+  * {margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
+  html,body {width:100%; height:100%; color:#fff; line-height:1.6; overflow-x:hidden;}
+  
+  /* Fondo con GIF animado en mosaico (se repite) */
+  body {
+    background-image: url('data/fondo.gif');
+    background-repeat: repeat;          /* Repite la imagen en mosaico */
+    background-size: auto;              /* Tamaño original del GIF */
+    background-attachment: fixed;       /* Fijo al hacer scroll */
+  }
+
+  .ticker-wrapper {
+    background-color: #000;
+    color: #fff;
+    overflow: hidden;
+    white-space: nowrap;
+    border-top: 2px solid #00ffcc;
+    border-bottom: 2px solid #00ffcc;
+    padding: 8px 0;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 0 15px rgba(0,255,204,0.3);
+  }
+  .ticker-wrapper::before,
+  .ticker-wrapper::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 50px;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .ticker-wrapper::before { left: 0; background: linear-gradient(to right, #000, transparent); }
+  .ticker-wrapper::after { right: 0; background: linear-gradient(to left, #000, transparent); }
+  .ticker {
+    display: inline-block;
+    animation: tickerMove 20s linear infinite;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #fff;
+    padding-left: 100%;
+  }
+  .ticker span {
+    display: inline-block;
+    padding-right: 50px;
+    color: #00ffcc;
+    text-shadow: 0 0 8px rgba(0,255,204,0.8);
+  }
+  @keyframes tickerMove {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+
+  header {background-color: rgba(0,0,0,0.5); padding:1rem 2rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap; border-bottom:2px solid #fff; justify-content:space-between; position:relative;}
+  header img {max-width:80px;}
+  .header-text {flex:1 1 200px;}
+  header h1 {font-size:2rem; margin-bottom:0.5rem; text-shadow: 1px 1px 5px rgba(0,0,0,0.7); min-height: 2.5rem;}
+  .typing-cursor {display: inline-block; color: #00ffcc; animation: blink 1s infinite;}
+  @keyframes blink { 0%, 100% {opacity: 1;} 50% {opacity: 0;}}
+  header p {font-size:1rem; color:#ddd; text-shadow: 1px 1px 5px rgba(0,0,0,0.5);}
+
+  main {padding:3rem 1rem; max-width:1000px; margin:3rem auto; background-color: rgba(0,0,0,0.65); border-radius:15px;}
+
+  .stats {display:flex; justify-content:center; gap:3rem; margin:3rem 0; flex-wrap:wrap;}
+  .stat {text-align:center; flex:1 1 120px;}
+  .counter {font-size:2.5rem; color:#fff; text-shadow:0 0 10px #00ffcc; font-weight:bold;}
+  .stat p {margin-top:0.5rem; font-size:1.1rem; color:#ddd;}
+
+  footer {text-align:center; padding:2rem 1rem; border-top:1px solid #fff; color:#ccc; font-size:0.9rem; background:rgba(0,0,0,0.5);}
+
+  @media(max-width:768px){
+    header{justify-content:center; text-align:center;}
+    header h1{font-size:1.6rem;}
+  }
+
+  /* ===== ESTILOS DE LA SIMULACIÓN ===== */
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+  .sim-container {
+    margin: 2rem 0;
+  }
+  .sim-container .terminal-sim {
+    font-family: 'Share Tech Mono', monospace;
+    background: #0d0d14;
+    border: 1px solid #1a3a2a;
+    border-radius: 12px;
+    padding: 24px 26px 26px;
+    box-shadow: 0 0 40px rgba(0, 255, 100, 0.06), inset 0 0 60px rgba(0, 255, 100, 0.02);
+    position: relative;
+    backdrop-filter: blur(2px);
+  }
+  .sim-container .terminal-sim::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 15%;
+    right: 15%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00ff88, transparent);
+    opacity: 0.4;
+    border-radius: 50%;
+  }
+  .sim-container .term-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #1a2a22;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .sim-container .term-dots {
+    display: flex;
+    gap: 8px;
+  }
+  .sim-container .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .sim-container .dot.red { background: #ff3355; box-shadow: 0 0 8px #ff335566; }
+  .sim-container .dot.yellow { background: #ffcc00; box-shadow: 0 0 8px #ffcc0066; }
+  .sim-container .dot.green { background: #00ff88; box-shadow: 0 0 8px #00ff8866; }
+  .sim-container .term-title {
+    color: #4a7a6a;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .sim-container .term-title span {
+    color: #00ff88;
+    animation: blink 1.2s step-end infinite;
+  }
+  .sim-container .warning-badge {
+    display: inline-block;
+    background: #1a0a0a;
+    border: 1px solid #ff335544;
+    color: #ff4466;
+    font-size: 10px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .sim-container .profile-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .sim-container .avatar-hack {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #1a3a2a, #0a1a12);
+    border: 2px solid #00ff8866;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: #00ff88;
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.1);
+    flex-shrink: 0;
+  }
+  .sim-container .profile-info h2 {
+    color: #ccffdd;
+    font-size: 19px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    cursor: default;
+  }
+  .sim-container .profile-info h2:hover { animation: glitch 0.2s ease-in-out; }
+  @keyframes glitch {
+    0% { transform: translate(0); }
+    25% { transform: translate(-2px, 1px); opacity: 0.8; }
+    50% { transform: translate(2px, -1px); }
+    75% { transform: translate(-1px, 2px); }
+    100% { transform: translate(0); }
+  }
+  .sim-container .profile-info .handle {
+    color: #4a7a6a;
+    font-size: 13px;
+  }
+  .sim-container .profile-info .handle span { color: #00ff88; }
+  .sim-container .status-badge {
+    display: inline-block;
+    background: #0a1a12;
+    border: 1px solid #00ff8844;
+    color: #00ff88;
+    font-size: 10px;
+    padding: 2px 12px;
+    border-radius: 12px;
+    margin-top: 4px;
+  }
+  .sim-container .data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 16px 0 14px;
+  }
+  .sim-container .data-item {
+    background: #0a0a12;
+    border: 1px solid #141f1a;
+    padding: 10px 14px;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+  }
+  .sim-container .data-item:hover { border-color: #00ff8844; }
+  .sim-container .data-item .label {
+    color: #4a6a5a;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sim-container .data-item .label .icon { font-size: 12px; }
+  .sim-container .data-item .value {
+    color: #bbffdd;
+    font-size: 14px;
+    margin-top: 3px;
+    word-break: break-all;
+  }
+  .sim-container .data-item .value.highlight { color: #ff8844; text-shadow: 0 0 20px rgba(255,136,68,0.15); }
+  .sim-container .data-item.full { grid-column: span 2; }
+  .sim-container .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0 0;
+  }
+  .sim-container .tag {
+    background: #0a1a12;
+    border: 1px solid #1a3a2a;
+    color: #4a9a7a;
+    font-size: 10px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+  }
+  .sim-container .tag.danger { border-color: #ff335544; color: #ff4466; background: #1a0a0a; }
+  .sim-container .tag.warning { border-color: #ffcc0044; color: #ffcc44; background: #1a1a0a; }
+  .sim-container .stamp {
+    position: absolute;
+    bottom: 16px;
+    right: 20px;
+    color: #00ff8822;
+    font-size: 9px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    transform: rotate(-8deg);
+    border: 1px solid #00ff8822;
+    padding: 4px 12px;
+    border-radius: 2px;
+    pointer-events: none;
+  }
+  @media (max-width: 768px) {
+    .sim-container .data-grid { grid-template-columns: 1fr; }
+    .sim-container .data-item.full { grid-column: span 1; }
+    .sim-container .profile-row { flex-direction: column; align-items: flex-start; }
+    .sim-container .stamp { display: none; }
+  }
+
+  #apps h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #fff;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+  }
+  #apps p {
+    margin-top: 1rem;
+    color: #ddd;
+  }
+  section {
+    margin-bottom: 3rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- El GIF de fondo se carga en el CSS del body -->
+
+<header>
+  <img src="data/logo.png" alt="Logo">
+  <div class="header-text">
+    <h1 id="typing-title"></h1>
+    <p>Denuncias Cibernéticas</p>
+  </div>
+</header>
+
+<!-- TICKER ORIGINAL RESTAURADO -->
+<div class="ticker-wrapper">
+  <div class="ticker">
+    <span>ᛉ Reportes Delictivos · Datos 100% Reales</span>
+    <span>ᛟ  compartimos información real · extracción de datos</span>
+    <span>ꑭ Combate contra la ciberdelincuencia</span>
+    <span>⊝ El doxeo es real · Infórmate</span>
+    <span>⦻ Recursos Encriptados · Denuncia sin miedo</span>
+    <span>ᛣ Comunidad hacktivista · Lucha contra la delincuencia</span>
+  </div>
+</div>
+
+<main>
+  <!-- SIMULACIÓN -->
+  <div class="sim-container">
+    <div class="terminal-sim">
+      <div class="term-header">
+        <div class="term-dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <div class="term-title"> F SOCIETY <span>_</span> EXPOSED</div>
+        <div style="width:40px;"></div>
+      </div>
+      <div class="warning-badge"> HACKEO · DATOS PERSONALES</div>
+      <div class="profile-row">
+        <div class="avatar-hack">⛧</div>
+        <div class="profile-info">
+          <h2 id="profileName">Juan D. Benavides</h2>
+          <div class="handle">@<span id="profileHandle">juan.benavidez_</span> · <span id="profileHex">Ataque éxitoso</span></div>
+          <div class="status-badge">● VIVO · ACOSADOR</div>
+        </div>
+      </div>
+      <div class="data-grid">
+        <div class="data-item">
+          <div class="label"><span class="icon">📝</span> Nombres</div>
+          <div class="value highlight" id="dNombres">Juan David</div>
+        </div>
+        <div class="data-item">
+          <div class="label"><span class="icon">📝</span> Apellidos</div>
+          <div class="value highlight" id="dApellidos">Benavides Martinez</div>
+        </div>
+        <div class="data-item">
+          <div class="label"><span class="icon">📱</span> Teléfono</div>
+          <div class="value highlight" id="dTelefono">+57 321 505 5675</div>
+        </div>
+        <div class="data-item">
+          <div class="label"><span class="icon">🆔</span> Cédula</div>
+          <div class="value" id="dCedula">1006325298</div>
+        </div>
+        <div class="data-item">
+          <div class="label"><span class="icon">📋</span> Serial Registro Civil</div>
+          <div class="value" id="dSerial">0034857948</div>
+        </div>
+        <div class="data-item">
+          <div class="label"><span class="icon">📍</span> Reposa en</div>
+          <div class="value" id="dReposa">Cra30 #29-51 NOTARIA 1 PALMIRA - VALLE</div>
+        </div>
+        <div class="data-item full">
+          <div class="label"><span class="icon">📅</span> Fecha de Expedición</div>
+          <div class="value" id="dFechaExp">03 de Mayo de 2002</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag">🔓 En Venta</span>
+        <span class="tag danger">⚠️ EXPOSED</span>
+        <span class="tag warning">⛧ Datos Personales</span>
+        <span class="tag">🛡️ Acosador</span>
+      </div>
+      <div class="stamp">⛧ EN VENTA</div>
+    </div>
+  </div>
+
+  <!-- Reportar -->
+  <section id="apps">
+    <h2>Reporta Actividad Sospechosa</h2>
+    <p>Aquí podrás reportar cualquier tipo de actividad sospechosa para que La Unidad De F Society de la Deep Web pueda interactuar y decidir. un subgrupo de la comunidad dedicado a luchar contra acosadores y extorsión entre otros delitos para mantener y establecer un internet más seguro.</p>
+  </section>
+
+  <!-- Contadores -->
+  <div class="stats" id="stats">
+    <div class="stat"><h3 class="counter" data-target="268">0</h3><p>Grupos/Canales Cerrados</p></div>
+    <div class="stat"><h3 class="counter" data-target="143">0</h3><p>Personas Expuestas</p></div>
+    <div class="stat"><h3 class="counter" data-target="102">0</h3><p>Webs Eliminadas</p></div>
+  </div>
+
+</main>
+
+<footer>
+  &copy; 𝐅 [𝐒𝐎𝐂𝐈𝐄𝐓𝐘]™ 2026. Todos los derechos reservados.
+</footer>
+
+<script>
+  // Efecto de escritura en el título
+  function startTypingAnimation() {
+    const typingTitle = document.getElementById('typing-title');
+    const titleText = '𝐅 [𝐒𝐎𝐂𝐈𝐄𝐓𝐘]™';
+    let charIndex = 0;
+    function typeWriter() {
+      if (charIndex < titleText.length) {
+        typingTitle.innerHTML = titleText.substring(0, charIndex + 1) + '<span class="typing-cursor">|</span>';
+        charIndex++;
+        setTimeout(typeWriter, 100);
+      } else {
+        typingTitle.innerHTML = titleText;
+      }
+    }
+    typeWriter();
+  }
+  window.addEventListener("load", startTypingAnimation);
+
+  // Contadores
+  const counters = document.querySelectorAll('.counter');
+  counters.forEach(counter => {
+    const target = +counter.getAttribute('data-target');
+    let count = 0;
+    const increment = Math.ceil(target / 100);
+    const updateCounter = () => {
+      count += increment;
+      if (count >= target) {
+        counter.textContent = target;
+      } else {
+        counter.textContent = count;
+        setTimeout(updateCounter, 30);
+      }
+    };
+    updateCounter();
+  });
+</script>
+</body>
+  </html>
